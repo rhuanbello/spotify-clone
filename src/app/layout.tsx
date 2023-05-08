@@ -1,18 +1,20 @@
-'use client';
 import './globals.css';
-import { SessionProvider } from 'next-auth/react';
+import { NextAuthProvider } from './providers';
 
-export default function RootLayout({
-  children,
-  session
-}: {
+export const metadata = {
+  title: 'Home',
+}
+
+export default function RootLayout(props: {
   children: React.ReactNode;
-  session: any;
 }) {
+
   return (
     <html lang="en">
       <body className="bg-zinc-900 text-zinc-400">
-        <SessionProvider session={session}>{children}</SessionProvider>
+        <NextAuthProvider>
+          {props.children}
+        </NextAuthProvider>
       </body>
     </html>
   );

@@ -1,5 +1,3 @@
-import SpotifyWebApi from 'spotify-web-api-node';
-
 const scopes = [
   'user-read-email',
   'playlist-read-private',
@@ -24,13 +22,14 @@ const params = {
 };
 
 const queryParamString = new URLSearchParams(params);
-const LOGIN_URL =
+export const LOGIN_URL =
   `https://accounts.spotify.com/authorize?` + queryParamString.toString();
 
-const spotifyApi = new SpotifyWebApi({
-  clientId: process.env.NEXT_PUBLIC_CLIENT_ID,
-  clientSecret: process.env.NEXT_PUBLIC_CLIENT_SECRET,
-  redirectUri: 'http://localhost:3000/callback/'
-});
+const clientId = process.env.SPOTIFY_CLIENT_ID;
+const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
 
-export { spotifyApi, LOGIN_URL };
+export const basic = Buffer.from(`${clientId}:${clientSecret}`).toString(
+  'base64'
+);
+
+export const TOKEN_ENDPOINT = `https://accounts.spotify.com/api/token`;

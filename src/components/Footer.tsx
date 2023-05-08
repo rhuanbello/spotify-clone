@@ -1,15 +1,30 @@
-import { Play, Shuffle, SkipBack, SkipForward, Repeat, Mic2, LayoutList, Laptop2, Volume, Maximize2 } from 'lucide-react'
-import Image from 'next/image'
-
+import {
+  Play,
+  Shuffle,
+  SkipBack,
+  SkipForward,
+  Repeat,
+  Mic2,
+  LayoutList,
+  Laptop2,
+  Volume,
+  Maximize2
+} from 'lucide-react';
+import Image from 'next/image';
 
 export const Footer = () => {
   return (
     <footer className="bg-zinc-900 border-t border-zinc-700 p-6 flex items-center justify-between">
       <div className="flex items-center gap-3">
-        <Image width={56} height={56} src="https://i.scdn.co/image/ab67656300005f1f79ae316412efb2d1674a433e" alt="playlist" />
+        <Image
+          width={56}
+          height={56}
+          src="https://i.scdn.co/image/ab67656300005f1f79ae316412efb2d1674a433e"
+          alt="playlist"
+        />
         <div className="flex flex-col">
           <strong className="font-normal">Rope</strong>
-          <span className='text-xs text-zinc-400'>Fred</span>
+          <span className="text-xs text-zinc-400">Fred</span>
         </div>
       </div>
 
@@ -48,5 +63,5 @@ export const Footer = () => {
         <Maximize2 size={20} />
       </div>
     </footer>
-  )
-}
+  );
+};
