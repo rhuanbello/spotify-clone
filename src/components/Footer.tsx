@@ -14,7 +14,7 @@ import Image from 'next/image';
 
 export const Footer = () => {
   return (
-    <footer className="bg-black p-5 flex items-center justify-between">
+    <footer className="bg-black p-5 flex items-center justify-between h-[10vh]">
       <div className="flex items-center gap-3">
         <Image
           width={56}

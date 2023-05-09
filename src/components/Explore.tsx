@@ -46,7 +46,7 @@ export const Explore = async () => {
           Seus artistas favoritos
         </h2>
 
-        <div className="grid grid-cols-5 lg:grid-cols-8 gap-4 mt-4">
+        <div className="grid grid-cols-4 xl:grid-cols-6 2xl:grid-cols-8 gap-4 mt-4">
           {topArtists.map(({ id, name, url }) => (
             <a
               key={id}
@@ -71,7 +71,7 @@ export const Explore = async () => {
 
         <h2 className="font-semibold text-2xl mt-10">Seus álbuns favoritos</h2>
 
-        <div className="grid grid-cols-8 gap-4 mt-4">
+        <div className="grid grid-cols-4 xl:grid-cols-6 2xl:grid-cols-8 gap-4 mt-4">
           {topAlbums.map(({ id, name, url, artistName }) => (
             <a
               key={id}

@@ -13,7 +13,7 @@ export const Sidebar = async () => {
   const playlists = await getPlaylists();
 
   return (
-    <aside className="w-80 pl-2 flex flex-col gap-2">
+    <aside className="w-80 pl-2 flex flex-col gap-2 max-h-[90vh]">
       <nav className="space-y-5 bg-box p-6 rounded-lg">
         <a
           href=""
@@ -38,7 +38,7 @@ export const Sidebar = async () => {
         </a>
       </nav>
 
-      <nav className="flex flex-col bg-box py-6 rounded-lg max-h-[calc(90vh-168px)] overflow-y-auto scrollbar">
+      <nav className="flex flex-col bg-box py-6 rounded-lg overflow-y-auto scrollbar">
         {playlists.map((playlist) => (
           <Playlist key={playlist.id} {...playlist} />
         ))}
