@@ -12,8 +12,6 @@ export const Sidebar = async () => {
 
   const playlists = await getPlaylists();
 
-  console.log(playlists);
-
   return (
     <aside className="w-80 pl-2 flex flex-col gap-2">
       <nav className="space-y-5 bg-box p-6 rounded-lg">

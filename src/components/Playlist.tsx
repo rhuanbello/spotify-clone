@@ -1,9 +1,8 @@
-'use client';
-
+import { PlaylistProps } from '@/types/spotify';
 import Image from 'next/image';
 import Link from 'next/link';
 
-export const Playlist = ({ name, url, owner }: { name: string }) => {
+export const Playlist = ({ name, url, owner }: PlaylistProps) => {
   return (
     <Link
       href=""

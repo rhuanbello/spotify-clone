@@ -1,11 +1,13 @@
 import { basic, LOGIN_URL } from '@/lib/spotify';
+import { CallbackJWTProps, CallbackSessionProps } from '@/types/next-auth';
+import { SpotifyToken } from '@/types/spotify';
 import NextAuth from 'next-auth';
 import SpotifyProvider from 'next-auth/providers/spotify';
 import fetch from 'node-fetch';
 
 import { TokenProps } from './types';
 
-async function refreshAccessToken(token) {
+async function refreshAccessToken(token: TokenProps) {
   const response = await fetch('https://accounts.spotify.com/api/token', {
     method: 'POST',
     headers: {
@@ -17,7 +19,7 @@ async function refreshAccessToken(token) {
     })
   });
 
-  const data = await response.json();
+  const data = (await response.json()) as SpotifyToken;
 
   return {
     ...token,
@@ -40,16 +42,14 @@ export const authOptions = {
     signIn: '/'
   },
   callbacks: {
-    async jwt({ token, account, user }: { token: TokenProps }) {
-      console.log(token, account, user);
-
+    async jwt({ token, account, user }: CallbackJWTProps | any) {
       if (account && user) {
         return {
           ...token,
           accessToken: account.access_token,
           refreshToken: account.refresh_token,
           username: account.providerAccountId,
-          accessTokenExpires: account.expires_at * 1000
+          accessTokenExpires: account.expires_at && account.expires_at * 1000
         };
       }
 
@@ -60,12 +60,10 @@ export const authOptions = {
       return await refreshAccessToken(token);
     },
 
-    async session({ session, token }) {
+    async session({ session, token }: CallbackSessionProps | any) {
       session.user.accessToken = token.accessToken;
       session.user.refreshToken = token.refreshToken;
       session.user.username = token.username;
-
-      console.log('Session', session);
 
       return session;
     }

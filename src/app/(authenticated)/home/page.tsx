@@ -7,7 +7,6 @@ import { getServerSession } from 'next-auth';
 
 export async function generateMetadata() {
   const session = await getServerSession(authOptions);
-  console.log(session);
 
   return {
     title: session?.user?.name
@@ -22,7 +21,9 @@ export default async function Home() {
   return (
     <div className="min-h-screen flex flex-col">
       <section className="flex flex-1 gap-2">
+        {/* @ts-expect-error Server Component */}
         <Sidebar />
+        {/* @ts-expect-error Server Component */}
         <Explore />
       </section>
 

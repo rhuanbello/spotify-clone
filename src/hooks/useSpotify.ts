@@ -1,4 +1,11 @@
 import { SessionProps } from '@/types/next-auth.d';
+import {
+  PlaylistProps,
+  RecentlyPlayedProps,
+  TopAlbumsProps,
+  TopArtistsProps
+} from '@/types/spotify';
+import { Playlist, RecentlyPlayed, Artist, Track } from 'spotify-types';
 
 import { spotifyApi } from './../lib/spotify';
 
@@ -15,18 +22,20 @@ export const useSpotify = (session: SessionProps) => {
       }
     });
 
-    const data = await response.json();
+    const { items }: { items: Playlist[] } = await response.json();
 
-    const playlists = data.items.map(({ id, name, owner, images }) => {
-      const [image] = images;
+    const playlists = items.map(
+      ({ id, name, owner, images }): PlaylistProps => {
+        const [image] = images;
 
-      return {
-        id,
-        name,
-        owner: owner.display_name,
-        url: image.url
-      };
-    });
+        return {
+          id,
+          name,
+          owner: owner.display_name,
+          url: image.url
+        };
+      }
+    );
 
     return playlists;
   };
@@ -37,23 +46,27 @@ export const useSpotify = (session: SessionProps) => {
       { headers }
     );
 
-    const data = await response.json();
+    const data: RecentlyPlayed = await response.json();
 
-    const lastPlayedArtists = data.items.reduce((acc, { track }) => {
-      const [artist] = track.artists;
-      const [image] = track.album.images;
+    const lastPlayedArtists = data.items.reduce<RecentlyPlayedProps[]>(
+      (acc, { track }) => {
+        const [artist] = track.artists;
+        const [image] = track.album.images;
 
-      const hasArtist = acc.findIndex((x) => x.id === artist.id);
+        const hasArtist = acc.findIndex((x) => x.id === artist.id) !== -1;
 
-      if (hasArtist === -1) {
-        acc.push({
-          ...artist,
-          ...image
-        });
-      }
+        if (!hasArtist) {
+          acc.push({
+            id: artist.id,
+            name: artist.name,
+            url: image.url
+          });
+        }
 
-      return acc;
-    }, []);
+        return acc;
+      },
+      []
+    );
 
     return lastPlayedArtists.slice(0, 6);
   };
@@ -64,15 +77,15 @@ export const useSpotify = (session: SessionProps) => {
       { headers }
     );
 
-    const data = await response.json();
+    const { items }: { items: Artist[] } = await response.json();
 
-    const topArtists = data.items.map(({ id, name, images }) => {
+    const topArtists = items.map(({ id, name, images }): TopArtistsProps => {
       const [image] = images;
 
       return {
         id,
         name,
-        ...image
+        url: image.url
       };
     });
 
@@ -85,35 +98,28 @@ export const useSpotify = (session: SessionProps) => {
       { headers }
     );
 
-    const data = await response.json();
+    const { items }: { items: Track[] } = await response.json();
 
-    console.log(data);
+    const topAlbums = items.reduce<TopAlbumsProps[]>(
+      (acc, { album, artists }) => {
+        const [artist] = artists;
+        const [image] = album.images;
 
-    const topAlbums = data.items.reduce((acc, { album, artists }) => {
-      const [artist] = artists;
-      const [image] = album.images;
+        const hasAlbum = acc.findIndex((x) => x.id === album.id);
 
-      console.log(artist);
+        if (hasAlbum === -1) {
+          acc.push({
+            id: album.id,
+            name: album.name,
+            url: image.url,
+            artistName: artist.name
+          });
+        }
 
-      console.log(album);
-      const hasAlbum = acc.findIndex((x) => x.id === album.id);
-
-      console.log(hasAlbum, album);
-
-      if (hasAlbum === -1) {
-        acc.push({
-          ...image,
-          id: album.id,
-          name: album.name,
-          url: image.url,
-          artistName: artist.name
-        });
-      }
-
-      return acc;
-    }, []);
-
-    console.log(topAlbums);
+        return acc;
+      },
+      []
+    );
 
     return topAlbums.slice(0, 8);
   };
