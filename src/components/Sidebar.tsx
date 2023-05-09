@@ -10,7 +10,9 @@ export const Sidebar = async () => {
 
   const { getPlaylists } = useSpotify(session);
 
-  const { items } = await getPlaylists();
+  const playlists = await getPlaylists();
+
+  console.log(playlists);
 
   return (
     <aside className="w-80 pl-2 flex flex-col gap-2">
@@ -38,15 +40,10 @@ export const Sidebar = async () => {
         </a>
       </nav>
 
-      <nav className="flex flex-col gap-3 bg-box p-6 rounded-lg max-h-[calc(90vh-168px)] overflow-y-auto scrollbar">
-        <>
-          {items.map((playlist) => (
-            <Playlist key={playlist.id} {...playlist} />
-          ))}
-          {items.map((playlist) => (
-            <Playlist key={playlist.id} {...playlist} />
-          ))}
-        </>
+      <nav className="flex flex-col bg-box py-6 rounded-lg max-h-[calc(90vh-168px)] overflow-y-auto scrollbar">
+        {playlists.map((playlist) => (
+          <Playlist key={playlist.id} {...playlist} />
+        ))}
       </nav>
     </aside>
   );

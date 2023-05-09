@@ -15,7 +15,20 @@ export const useSpotify = (session: SessionProps) => {
       }
     });
 
-    return response.json();
+    const data = await response.json();
+
+    const playlists = data.items.map(({ id, name, owner, images }) => {
+      const [image] = images;
+
+      return {
+        id,
+        name,
+        owner: owner.display_name,
+        url: image.url
+      };
+    });
+
+    return playlists;
   };
 
   const getRecentlyPlayed = async () => {

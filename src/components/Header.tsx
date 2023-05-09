@@ -11,7 +11,7 @@ import Link from 'next/link';
 
 export const Header = ({ user }: { user: SessionProps['user'] }) => {
   return (
-    <header className="z-20 sticky top-0 flex items-center justify-between">
+    <header className="z-20 sticky top-0 flex items-center justify-between bg-transparent hover:bg-violet-950/40 transition-colors">
       <div className={clsx(`flex items-center gap-4 bg-transparent p-5`)}>
         <button className="rounded-full bg-black/40 p-1">
           <ChevronLeft />
