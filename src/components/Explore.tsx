@@ -19,9 +19,9 @@ export const Explore = async () => {
   ]);
 
   return (
-    <main className="flex-1 max-h-[90vh] overflow-y-auto pb-52 scrollbar rounded-lg relative bg-box">
-      <div className="bg-gradient-to-b to-box from-emerald-800 h-80 w-full absolute top-0" />
-      <Header />
+    <main className="flex-1 max-h-[90vh] overflow-y-auto pb-52 pr-5 scrollbar rounded-lg relative bg-box">
+      <div className="bg-gradient-to-b to-box from-violet-950 h-80 w-full absolute top-0" />
+      <Header user={session.user} />
 
       <div className="pt-0 pl-5 z-10 relative">
         <h1 className="text-3xl font-semibold">Boa noite</h1>

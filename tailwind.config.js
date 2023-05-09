@@ -8,7 +8,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        box: '#121212'
+        box: '#121212',
+        purple: '#8a63d2'
       }
     }
   },
