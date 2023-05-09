@@ -1,20 +1,17 @@
 import { LoginButton, ContinueButton } from '@/components/LoginActions';
 import { getServerSession } from 'next-auth';
 
-const callbackUrl = process.env.SPOTIFY_REDIRECT_URI!;
+import { authOptions } from './api/auth/[...nextauth]/route';
 
 export default async function Home() {
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
 
   return (
     <div className="w-full h-screen flex flex-col items-center p-4">
       {session ? (
-        <ContinueButton
-          username={session?.user?.name!}
-          callbackUrl={callbackUrl}
-        />
+        <ContinueButton username={session.user?.name} />
       ) : (
-        <LoginButton callbackUrl={callbackUrl} />
+        <LoginButton />
       )}
     </div>
   );

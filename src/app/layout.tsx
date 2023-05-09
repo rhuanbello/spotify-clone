@@ -2,19 +2,15 @@ import './globals.css';
 import { NextAuthProvider } from './providers';
 
 export const metadata = {
-  title: 'Home',
-}
+  title: 'Spotify - Music for everyone',
+  description: 'Spotify is all the music you’ll ever need.'
+};
 
-export default function RootLayout(props: {
-  children: React.ReactNode;
-}) {
-
+export default function RootLayout(props: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className="bg-zinc-900 text-zinc-400">
-        <NextAuthProvider>
-          {props.children}
-        </NextAuthProvider>
+      <body className="bg-zinc-950 text-zinc-100 overflow-y-hidden">
+        <NextAuthProvider>{props.children}</NextAuthProvider>
       </body>
     </html>
   );

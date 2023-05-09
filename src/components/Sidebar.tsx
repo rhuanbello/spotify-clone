@@ -13,8 +13,8 @@ export const Sidebar = async () => {
   const { items } = await getPlaylists();
 
   return (
-    <aside className="w-72 bg-zinc-950 p-6">
-      <nav className="space-y-5">
+    <aside className="w-80 pl-2 flex flex-col gap-2">
+      <nav className="space-y-5 bg-box p-6 rounded-lg">
         <a
           href=""
           className="flex items-center gap-4 text-sm font-semibold text-zinc-200"
@@ -38,10 +38,15 @@ export const Sidebar = async () => {
         </a>
       </nav>
 
-      <nav className="mt-10 pt-10 border-t border-zinc-700 flex flex-col gap-3">
-        {items.map((playlist) => (
-          <Playlist key={playlist.id} {...playlist} />
-        ))}
+      <nav className="flex flex-col gap-3 bg-box p-6 rounded-lg max-h-[calc(90vh-168px)] overflow-y-auto scrollbar">
+        <>
+          {items.map((playlist) => (
+            <Playlist key={playlist.id} {...playlist} />
+          ))}
+          {items.map((playlist) => (
+            <Playlist key={playlist.id} {...playlist} />
+          ))}
+        </>
       </nav>
     </aside>
   );

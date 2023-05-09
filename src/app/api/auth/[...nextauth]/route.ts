@@ -3,6 +3,8 @@ import NextAuth from 'next-auth';
 import SpotifyProvider from 'next-auth/providers/spotify';
 import fetch from 'node-fetch';
 
+import { TokenProps } from './types';
+
 async function refreshAccessToken(token) {
   const response = await fetch('https://accounts.spotify.com/api/token', {
     method: 'POST',
@@ -18,6 +20,7 @@ async function refreshAccessToken(token) {
   const data = await response.json();
 
   return {
+    ...token,
     accessToken: data.access_token,
     refreshToken: data.refresh_token ?? token.refreshToken,
     accessTokenExpires: Date.now() + data.expires_in * 1000
@@ -37,8 +40,9 @@ export const authOptions = {
     signIn: '/'
   },
   callbacks: {
-    async jwt({ token, account, user }) {
-      // Initil Sign In
+    async jwt({ token, account, user }: { token: TokenProps }) {
+      console.log(token, account, user);
+
       if (account && user) {
         return {
           ...token,
@@ -49,14 +53,10 @@ export const authOptions = {
         };
       }
 
-      // Return previous token if the access token hasn't expired yet
       if (Date.now() < token.accessTokenExpires) {
-        console.log('Token is valid ...');
         return token;
       }
 
-      // Access Token expired, so refresh it...token
-      console.log('Token expired, refreshing...');
       return await refreshAccessToken(token);
     },
 
@@ -64,6 +64,8 @@ export const authOptions = {
       session.user.accessToken = token.accessToken;
       session.user.refreshToken = token.refreshToken;
       session.user.username = token.username;
+
+      console.log('Session', session);
 
       return session;
     }

@@ -25,3 +25,18 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+@layer utilities {
+  .scrollbar::-webkit-scrollbar {
+    width: 10px;
+    scrollbar-width: thin;
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb {
+    background: hsla(0, 0%, 100%, 0.3);
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb:hover {
+    background: hsla(0, 0%, 100%, 0.5);
+  }
+}
