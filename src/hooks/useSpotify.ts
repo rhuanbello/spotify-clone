@@ -5,7 +5,13 @@ import {
   TopAlbumsProps,
   TopArtistsProps
 } from '@/types/spotify';
-import { Playlist, RecentlyPlayed, Artist, Track } from 'spotify-types';
+import {
+  Playlist,
+  RecentlyPlayed,
+  Artist,
+  SavedTrack,
+  Track
+} from 'spotify-types';
 
 import { spotifyApi } from './../lib/spotify';
 
@@ -124,10 +130,37 @@ export const useSpotify = (session: SessionProps) => {
     return topAlbums.slice(0, 8);
   };
 
+  const getSavedTracks = async () => {
+    const response = await fetch(spotifyApi + '/me/tracks?limit=50', {
+      headers
+    });
+
+    const { items, total }: { items: SavedTrack[]; total: number } =
+      await response.json();
+
+    const savedTracks = items.map(({ added_at, track }) => {
+      const [artist] = track.artists;
+      const [image] = track.album.images;
+
+      return {
+        id: track.id,
+        name: track.name,
+        url: image.url,
+        artistName: artist.name,
+        albumName: track.album.name,
+        addedAt: added_at,
+        duration: track.duration_ms
+      };
+    });
+
+    return { savedTracks, total };
+  };
+
   return {
     getPlaylists,
     getRecentlyPlayed,
     getTopArtists,
-    getTopAlbums
+    getTopAlbums,
+    getSavedTracks
   };
 };
