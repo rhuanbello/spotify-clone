@@ -13,7 +13,7 @@ export const Sidebar = async () => {
   const playlists = await getPlaylists();
 
   return (
-    <aside className="w-80 pl-2 flex flex-col gap-2 max-h-[90vh]">
+    <aside className="w-80 pl-2 flex flex-col gap-2 max-h-[calc(100vh-96px)]">
       <NavBar />
 
       <nav className="flex flex-col bg-box py-6 rounded-lg overflow-y-auto scrollbar">

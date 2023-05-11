@@ -1,8 +1,8 @@
 import { ReactNode } from 'react';
 
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
-import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
+import { Player } from '@/components/Player';
 import { Sidebar } from '@/components/Sidebar';
 import { getServerSession } from 'next-auth';
 
@@ -26,14 +26,14 @@ export default async function HomeLayout({ children }: HomeLayoutProps) {
         {/* @ts-expect-error Server Component */}
         <Sidebar />
 
-        <main className="flex-1 max-h-[90vh] overflow-y-auto pb-52 pr-5 scrollbar rounded-lg relative bg-box">
+        <main className="flex-1 max-h-[calc(100vh-96px)] overflow-y-auto pb-52 pr-5 scrollbar rounded-lg relative bg-box">
           <div className="bg-gradient-to-b to-box from-violet-950 h-80 w-full absolute top-0" />
           <Header user={session.user} />
 
           {children}
         </main>
       </section>
-      <Footer />
+      <Player />
     </div>
   );
 }

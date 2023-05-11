@@ -16,7 +16,7 @@ export default async function SavedTracks() {
 
   const { getSavedTracks } = useSpotify(session);
 
-  const savedTracks = await getSavedTracks();
+  const { savedTracks, total } = await getSavedTracks();
 
   return (
     <div>
@@ -44,7 +44,7 @@ export default async function SavedTracks() {
             />
             <strong>{user.name}</strong>
             <span>•</span>
-            <span>1.759 músicas</span>
+            <span>{total} músicas</span>
           </div>
         </div>
       </div>
@@ -64,7 +64,7 @@ export default async function SavedTracks() {
           </thead>
 
           <tbody className="before:leading-5 before:block before:content-['-'] before:invisible">
-            {savedTracks.savedTracks.map(
+            {savedTracks.map(
               (
                 { id, url, name, addedAt, albumName, artistName, duration },
                 index
