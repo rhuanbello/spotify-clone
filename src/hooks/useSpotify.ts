@@ -197,3 +197,43 @@ export const useSpotify = (session: SessionProps) => {
     getPlayer
   };
 };
+
+export const useSpotifyOnClient = (session: SessionProps) => {
+  const headers = {
+    Authorization: `Bearer ${session?.user.accessToken}`
+  };
+
+  const getPlayer = async () => {
+    const response = await fetch(
+      spotifyApi + '/me/player?additional_types=track',
+      {
+        headers
+      }
+    );
+
+    const data: PlayerResponseProps = await response.json();
+
+    const player: PlayerProps = {
+      isPlaying: data.is_playing,
+      progressMs: data.progress_ms,
+      repeatState: data.repeat_state,
+      volumePercent: data.device.volume_percent,
+      shuffleState: data.shuffle_state,
+      item: {
+        id: data?.item?.id,
+        name: data?.item?.name,
+        url: data?.item?.album?.images[0].url,
+        artistName: data?.item?.artists[0].name,
+        albumName: data?.item?.album?.name,
+        duration: data?.item?.duration_ms,
+        previewUrl: data?.item?.preview_url
+      }
+    };
+
+    return player;
+  };
+
+  return {
+    getPlayer
+  };
+};

@@ -29,7 +29,7 @@ const clientId = process.env.SPOTIFY_CLIENT_ID;
 const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
 
 export const callbackUrl = process.env.NEXT_PUBLIC_SPOTIFY_REDIRECT_URI!;
-export const spotifyApi = process.env.SPOTIFY_BASE_URL!;
+export const spotifyApi = process.env.NEXT_PUBLIC_SPOTIFY_BASE_URL!;
 
 export const basic = Buffer.from(`${clientId}:${clientSecret}`).toString(
   'base64'

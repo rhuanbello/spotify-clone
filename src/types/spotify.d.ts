@@ -5,7 +5,8 @@ import {
   Playlist,
   PublicUser,
   AccessToken,
-  CurrentlyPlayingContext
+  CurrentlyPlayingContext,
+  RepeatState
 } from 'spotify-types';
 
 export type SpotifyToken = AccessToken & {

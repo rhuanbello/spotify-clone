@@ -9,6 +9,9 @@ const nextConfig = {
       'wrapped-images.spotifycdn.com',
       'spotifycdn'
     ]
+  },
+  experimental: {
+    serverActions: true
   }
 };
 

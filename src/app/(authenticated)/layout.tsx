@@ -33,7 +33,7 @@ export default async function HomeLayout({ children }: HomeLayoutProps) {
           {children}
         </main>
       </section>
-      <Player />
+      <Player session={session} />
     </div>
   );
 }

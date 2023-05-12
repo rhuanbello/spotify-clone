@@ -1,5 +1,8 @@
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
-import { useSpotify } from '@/hooks/useSpotify';
+'use client';
+
+import { useSpotifyOnClient } from '@/hooks/useSpotify';
+import { SessionProps } from '@/types/next-auth';
+import { useQuery } from '@tanstack/react-query';
 import clsx from 'clsx';
 import {
   Play,
@@ -14,27 +17,49 @@ import {
   Volume1,
   PauseIcon
 } from 'lucide-react';
-import { getServerSession } from 'next-auth';
 import Image from 'next/image';
 
 import { PlayerBar } from './PlayerBar';
 
-export const Player = async () => {
-  const session = await getServerSession(authOptions);
+export const Player = ({ session }: { session: SessionProps }) => {
+  const { getPlayer } = useSpotifyOnClient(session!);
 
-  const { getPlayer } = useSpotify(session);
+  const {
+    data: player = {
+      item: {
+        url: '',
+        name: '',
+        artistName: '',
+        albumName: '',
+        duration: 0,
+        progress: 0,
+        id: '',
+        previewUrl: ''
+      },
+      progressMs: 0,
+      volumePercent: 0,
+      shuffleState: 'off',
+      repeatState: 'off',
+      isPlaying: false
+    },
+    refetch,
+    isLoading,
+    isError
+  } = useQuery(['player'], getPlayer);
 
-  const player = await getPlayer();
+  if (isLoading || isError) return <></>;
 
   return (
-    <footer className="bg-black p-5 grid grid-cols-3 gap-2 justify-between">
+    <footer className="bg-black p-5 grid grid-cols-3 gap-3 justify-between">
       <div className="flex items-center gap-3">
-        <Image
-          width={56}
-          height={56}
-          src={player.item.url}
-          alt={player.item.name || 'Cover'}
-        />
+        {player.item.url && (
+          <Image
+            width={56}
+            height={56}
+            src={player.item.url}
+            alt={player.item.name || 'Cover'}
+          />
+        )}
         <div className="flex flex-col">
           <strong className="font-normal">{player.item.name}</strong>
           <span className="text-xs text-zinc-400">
@@ -48,17 +73,29 @@ export const Player = async () => {
           <Shuffle
             size={18}
             className={clsx('hover:brightness-125', {
-              'text-green-500': player.shuffleState,
-              'text-zinc-300': !player.shuffleState
+              'text-green-500': player.shuffleState === 'on',
+              'text-zinc-300': player.shuffleState !== 'on',
+              'text-zinc-500': !player.isPlaying
             })}
           />
 
           <SkipBack
             size={18}
-            className={'fill-zinc-300 hover:brightness-125'}
+            className={clsx(`hover:brightness-125`, {
+              'fill-zinc-300 text-zinc-300': player.isPlaying,
+              'fill-zinc-500 text-zinc-500': !player.isPlaying
+            })}
           />
 
-          <button className="w-8 h-8 flex items-center justify-center rounded-full bg-white text-black hover:scale-110 transition-transform cursor-default">
+          <button
+            className={clsx(
+              `w-8 h-8 flex items-center justify-center rounded-full  text-black hover:scale-110 transition-transform cursor-default`,
+              {
+                'bg-zinc-500': !player.isPlaying,
+                'bg-white': player.isPlaying
+              }
+            )}
+          >
             {player.isPlaying ? (
               <PauseIcon className="fill-black" size={18} />
             ) : (
@@ -68,19 +105,23 @@ export const Player = async () => {
 
           <SkipForward
             size={20}
-            className={'fill-zinc-300 hover:brightness-125'}
+            className={clsx(`hover:brightness-125`, {
+              'fill-zinc-300 text-zinc-300': player.isPlaying,
+              'fill-zinc-500 text-zinc-500': !player.isPlaying
+            })}
           />
 
           <Repeat
             size={18}
             className={clsx('hover:brightness-125', {
               'text-green-500': player.repeatState !== 'off',
-              'text-zinc-300': player.repeatState === 'off'
+              'text-zinc-300': player.repeatState === 'off',
+              'text-zinc-500': !player.isPlaying
             })}
           />
         </div>
 
-        <PlayerBar player={player} />
+        <PlayerBar player={player} refetch={refetch} />
       </div>
 
       <div className="flex items-center gap-4 w-full justify-end">
