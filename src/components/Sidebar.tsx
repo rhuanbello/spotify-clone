@@ -1,12 +1,11 @@
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { useSpotify } from '@/hooks/useSpotify';
-import { getServerSession } from 'next-auth';
+import { getServerSession } from '@/lib/next-auth';
 
 import { NavBar } from './NavBar';
 import { Playlist } from './Playlist';
 
 export const Sidebar = async () => {
-  const session = await getServerSession(authOptions);
+  const session = await getServerSession();
 
   const { getPlaylists } = useSpotify(session);
 

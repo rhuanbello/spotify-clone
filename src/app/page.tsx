@@ -1,10 +1,8 @@
 import { LoginButton, ContinueButton } from '@/components/LoginActions';
-import { getServerSession } from 'next-auth';
-
-import { authOptions } from './api/auth/[...nextauth]/route';
+import { getServerSession } from '@/lib/next-auth';
 
 export default async function Home() {
-  const session = await getServerSession(authOptions);
+  const session = await getServerSession();
 
   return (
     <div className="w-full h-screen flex flex-col items-center p-4">

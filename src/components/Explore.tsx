@@ -1,11 +1,10 @@
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { useSpotify } from '@/hooks/useSpotify';
+import { getServerSession } from '@/lib/next-auth';
 import { Play } from 'lucide-react';
-import { getServerSession } from 'next-auth';
 import Image from 'next/image';
 
 export const Explore = async () => {
-  const session = await getServerSession(authOptions);
+  const session = await getServerSession();
 
   const { getRecentlyPlayed, getTopArtists, getTopAlbums } =
     useSpotify(session);

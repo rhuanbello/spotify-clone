@@ -1,10 +1,9 @@
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { Explore } from '@/components/Explore';
+import { getServerSession } from '@/lib/next-auth';
 import { authError } from '@/utils/authError';
-import { getServerSession } from 'next-auth';
 
 export async function generateMetadata() {
-  const session = await getServerSession(authOptions);
+  const session = await getServerSession();
 
   return {
     title: session?.user?.name

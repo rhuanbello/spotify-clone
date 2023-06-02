@@ -1,7 +1,8 @@
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { useSpotify } from '@/hooks/useSpotify';
+import dayjs from '@/lib/dayjs';
+import { getServerSession } from '@/lib/next-auth';
+import { msToTime } from '@/utils/msToTime';
 import { Clock, Heart } from 'lucide-react';
-import { getServerSession } from 'next-auth';
 import Image from 'next/image';
 
 export const metadata = {
@@ -11,7 +12,7 @@ export const metadata = {
 };
 
 export default async function SavedTracks() {
-  const session = await getServerSession(authOptions);
+  const session = await getServerSession();
   const { user } = session;
 
   const { getSavedTracks } = useSpotify(session);
@@ -57,6 +58,7 @@ export default async function SavedTracks() {
               <th>Título</th>
               <th>Álbum</th>
               <th>Adicionada em</th>
+              <th />
               <th>
                 <Clock size={20} className="ml-auto mr-8" />
               </th>
@@ -86,15 +88,17 @@ export default async function SavedTracks() {
                     </div>
                   </td>
                   <td>{albumName}</td>
-                  <td>{addedAt}</td>
+                  <td>{dayjs(addedAt).format('DD[ de ] MMM[. de ]YYYY')}</td>
                   <td>
                     <div className="flex justify-around">
                       <Heart
                         size={20}
                         className="hover:fill-green-500 hover:text-green-500"
                       />
-                      <span>{duration}</span>
                     </div>
+                  </td>
+                  <td>
+                    <span>{msToTime(duration)}</span>
                   </td>
                 </tr>
               )
